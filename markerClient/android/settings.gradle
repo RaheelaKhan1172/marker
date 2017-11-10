@@ -1,0 +1,3 @@
+rootProject.name = 'markerClient'
+
+include ':app'
