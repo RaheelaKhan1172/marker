@@ -68,9 +68,7 @@ def login_required(f):
 @login_required
 def index():
   return jsonify({"ok": True})
-  
 
-## work on sign in and register with tokens later
 @app.route('/token', methods = ['POST', 'GET'])
 @login_required
 def sign_in():
