@@ -7,7 +7,7 @@ import {
 
 export class Button extends Component {
   render() {
-
+    /* generic button base */
   }  
 }
 
