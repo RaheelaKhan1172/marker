@@ -4,7 +4,9 @@
 
 import React, { Component } from 'react';
 import Instructions, {Instruction} from './components/Instructions';
-import SignUp from './components/SignUp';
+import Form from './components/Form';
+import Welcome from './components/Welcome';
+
 import {
   Platform,
   View,
@@ -14,11 +16,24 @@ import {
 
 
 export default class App extends Component<{}> {
+  constructor() {
+    super();
+    
+    this.state = {
+      currentView: '',
+    }
+  }
+  
+  updateView = (currentView) => {
+    this.setState({currentView});
+  }
+  
   render() {
+    console.log(this.state);
+    let comp = !this.state.currentView ? <Welcome viewUpdate={this.updateView} /> : <Form signin={this.state.currentView === 'signin'}/>
     return (
-      <View>
-          <Text> Form </Text>
-          <SignUp/>
+      <View style={styles.container}>
+        {comp}
       </View>
     );
   }
@@ -29,6 +44,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#607D8B',
+    flexDirection: 'row'
   },
   welcome: {
     fontSize: 20,

@@ -9,16 +9,18 @@ import {
   TextInput
 } from 'react-native';
 
+import BaseButton from './Button';
+
 export default class extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = { text:'', password: ''} 
   }
   
   render() {
-    console.log('email', this.state.text);
-    console.log('password', this.state.password);
+    console.log('props', this.props);
+    let button = this.props.signin ? <BaseButton title="sign in" onClick={() => console.log( 'sign in ')} /> : <BaseButton title="sign up" onClick={() => console.log('up')} />
     return (
       <View>
         <View>
@@ -46,6 +48,7 @@ export default class extends Component {
             secureTextEntry={true}
           />
         </View>
+        {button} 
       </View>
     )
   }
