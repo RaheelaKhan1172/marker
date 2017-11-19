@@ -73,7 +73,7 @@ def index():
 @login_required
 def sign_in():
   token = create_token(g.user_id)
-  return jsonify({"token": token.decode('ascii')})
+  return jsonify({"token": token.decode('ascii'), "uid": g.user_id[0]})
 
 @app.route('/users', methods = ['POST'])
 def sign_up():

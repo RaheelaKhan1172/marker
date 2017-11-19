@@ -1,10 +1,35 @@
 'use strict';
+import { AsyncStorage } from 'react-native';
 
-export const get = (url, params) => {
-  return new Promise((resolve, reject) => {
+export const getFromStorage = async (which) => {
+  let result = null;
+  try {
+    result = await AsyncStorage.getItem(which);  
+    console.log('result', result);
+  } catch (e) {
+    console.log('e', e);
+  }
+
+  return result;
+}
+
+export const get = async (url, params, addHeader = true) => {
+  return new Promise( async(resolve, reject) => {
       let request = new XMLHttpRequest();
       request.open('GET', url);
-      
+      if ( addHeader ) {
+        let user = null;
+        try {
+          user = await AsyncStorage.getItem("token");
+          console.log('user', user);
+        } catch (e) {
+          console.log('error in request -> get -> async storage', e);
+        }
+        if (user) {
+          request.setRequestHeader('Authorization', 'Basic ' + btoa(user + ':'));
+        }
+      }
+ 
       request.onreadystatechange = () => {
         if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
           resolve(request.response);

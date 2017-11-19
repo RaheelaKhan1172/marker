@@ -7,6 +7,7 @@ import Instructions, {Instruction} from './components/Instructions';
 import Form from './components/Form';
 import Welcome from './components/Welcome';
 import Router from './components/Router';
+import Marks from './components/Marks';
 
 import {
   Platform,
@@ -30,12 +31,12 @@ export default class App extends Component<{}> {
   
   updateView = (currentView) => {
     this.router.addPage( currentView );
+    console.log('currentView', currentView);
     this.setState({currentView});
   }
 
 
   forceUpdate = (currentView) => {
-    console.log('hi in update force');
     this.router.clear();
     this.setState({ currentView });
   }
@@ -49,15 +50,24 @@ export default class App extends Component<{}> {
   renderView() {
     // do rendering stuff here
     //switch case based on view
+    console.log('current', this.state.currentView);
+    switch(this.state.currentView) {
+      case 'signin':
+      case 'signup':
+        return <Form signin={this.state.currentView === 'signin'} goBack={this.goBack} update={this.forceUpdate}/>
+      case 'marks':
+        return <Marks/>
+      default:
+        return <Welcome viewUpdate={this.updateView} />
+    }
   }
  
   render() {
-    console.log(this.state);
     let comp = !this.state.currentView ? <Welcome viewUpdate={this.updateView} /> 
             : <Form signin={this.state.currentView === 'signin'} goBack={this.goBack} update={this.forceUpdate}/>
     return (
       <View style={styles.container}>
-        {comp}
+        {this.renderView()}
       </View>
     );
   }

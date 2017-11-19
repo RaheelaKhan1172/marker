@@ -6,7 +6,8 @@ import {
   View,
   Text,
   Image,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from 'react-native';
 
 import BaseButton from './Button';
@@ -17,13 +18,12 @@ export default class extends Component {
     super();
     this.state = { text:'', password: ''} 
   }
-  
+  // set isn't working neither is get 
   render() {
     let { goBack } = this.props;
     let button = this.props.signin ? <BaseButton title="Sign In" onClick={() => {
                                         post('http://127.0.0.1:5000/token', {username: this.state.text, password: this.state.password}, true)
                                         .then(d => {
-                                          console.log('success', d);
                                           this.props.update('marks');
                                         })
                                         .catch(e => console.log('e', e));
@@ -32,12 +32,24 @@ export default class extends Component {
                                         if (this.state.text && this.state.password) {
                                           post('http://127.0.0.1:5000/users', {email: this.state.text, password: this.state.password})
                                           .then(d => {
-                                            console.log('done yo', d);
-                                            this.props.update('marks');
-                                          })
+                                            //get token
+                                            return new Promise((resolve, reject) => {
+                                              post('http://127.0.0.1:5000/token', {username: this.state.text, password: this.state.password}, true)
+                                              .then((token) => {
+                                                try {
+                                                  console.log(token, JSON.parse(token))
+                                                  let parsed = JSON.parse(token);
+                                                  AsyncStorage.setItem('token', parsed.token);
+                                                  AsyncStorage.setItem('uid', parsed.uid.toString());
+                                                  resolve();
+                                                } catch (error) {
+                                                  reject(error);
+                                                }
+                                              }) 
+                                          })})
+                                          .then(() => this.props.update('marks'))
                                           .catch(e => console.warn('e', e));
                                         }
-                                        console.log('up', this.state.text, this.state.password)
                                       }} />
     return (
       <View>

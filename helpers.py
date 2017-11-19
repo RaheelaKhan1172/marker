@@ -81,6 +81,8 @@ def get_marks_for(user_id):
   db = get_db()
   keys = ['mark_id','mark_author', 'mark_name', 'notes', 'location', 'user_id']
   marks = None
+  print(user_id)
+  #pdb.set_trace()
   try:
     marks = db.execute('''
       SELECT * FROM mark
@@ -207,6 +209,8 @@ def user_from_token(token):
     return None
   else:
     u_id = data['user_id']
+    #print(u_id)
+    #pdb.set_trace()
     db = get_db()
-    user = db.execute('SELECT * FROM user WHERE user_id=?',(u_id,))
+    user = db.execute('SELECT * FROM user WHERE user_id=?',(u_id[0],))
     return user.fetchone()
