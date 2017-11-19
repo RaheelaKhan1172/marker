@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { post } from './request';
 import {
   Platform,
   StyleSheet,
@@ -20,8 +20,25 @@ export default class extends Component {
   
   render() {
     let { goBack } = this.props;
-    let button = this.props.signin ? <BaseButton title="Sign In" onClick={() => console.log( 'sign in ')} /> :
-                                     <BaseButton title="Sign Up" onClick={() => console.log('up')} />
+    let button = this.props.signin ? <BaseButton title="Sign In" onClick={() => {
+                                        post('http://127.0.0.1:5000/token', {username: this.state.text, password: this.state.password}, true)
+                                        .then(d => {
+                                          console.log('success', d);
+                                          this.props.update('marks');
+                                        })
+                                        .catch(e => console.log('e', e));
+                                      }} /> :
+                                     <BaseButton title="Sign Up" onClick={() => {
+                                        if (this.state.text && this.state.password) {
+                                          post('http://127.0.0.1:5000/users', {email: this.state.text, password: this.state.password})
+                                          .then(d => {
+                                            console.log('done yo', d);
+                                            this.props.update('marks');
+                                          })
+                                          .catch(e => console.warn('e', e));
+                                        }
+                                        console.log('up', this.state.text, this.state.password)
+                                      }} />
     return (
       <View>
         <BaseButton title="Back" onClick={goBack}/>

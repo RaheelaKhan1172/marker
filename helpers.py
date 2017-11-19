@@ -71,7 +71,7 @@ def insert_into_db(user, db=None):
     password = pwd_context.encrypt(user['password'])
     result = db.execute('''
       INSERT INTO user(email, password) VALUES(?,?)
-    ''', (user['email'], user['password']))
+    ''', (user['email'], password))
   except sqlite3.IntegrityError:
     raise UserRegistrationError('Email already exists')
   else:

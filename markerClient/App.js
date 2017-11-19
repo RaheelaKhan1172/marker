@@ -32,6 +32,13 @@ export default class App extends Component<{}> {
     this.router.addPage( currentView );
     this.setState({currentView});
   }
+
+
+  forceUpdate = (currentView) => {
+    console.log('hi in update force');
+    this.router.clear();
+    this.setState({ currentView });
+  }
   
   goBack = () => {
     this.router.back();
@@ -47,7 +54,7 @@ export default class App extends Component<{}> {
   render() {
     console.log(this.state);
     let comp = !this.state.currentView ? <Welcome viewUpdate={this.updateView} /> 
-            : <Form signin={this.state.currentView === 'signin'} goBack={this.goBack}/>
+            : <Form signin={this.state.currentView === 'signin'} goBack={this.goBack} update={this.forceUpdate}/>
     return (
       <View style={styles.container}>
         {comp}

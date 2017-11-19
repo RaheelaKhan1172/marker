@@ -18,4 +18,8 @@ export default class Router {
   back = () => {
     this.pages.pop();
   } 
+  
+  clear = () => {
+    this.pages = [];
+  }
 }
