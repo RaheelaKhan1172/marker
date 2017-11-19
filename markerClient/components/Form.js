@@ -19,10 +19,12 @@ export default class extends Component {
   }
   
   render() {
-    console.log('props', this.props);
-    let button = this.props.signin ? <BaseButton title="sign in" onClick={() => console.log( 'sign in ')} /> : <BaseButton title="sign up" onClick={() => console.log('up')} />
+    let { goBack } = this.props;
+    let button = this.props.signin ? <BaseButton title="Sign In" onClick={() => console.log( 'sign in ')} /> :
+                                     <BaseButton title="Sign Up" onClick={() => console.log('up')} />
     return (
       <View>
+        <BaseButton title="Back" onClick={goBack}/>
         <View>
           <TextInput 
             style={{height: 30, borderColor: 'gray', borderWidth: 1}}
