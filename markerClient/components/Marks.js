@@ -18,7 +18,8 @@ export default class extends React.Component {
     loading: true,
     data: []
   } 
-
+  id = undefined;
+  user = undefined;
   constructor() {
     super();
     //get data in here, and then render component if authenticatd
@@ -27,8 +28,11 @@ export default class extends React.Component {
 
   async getData() {
     let id = await getFromStorage('uid');
+    let user = await getFromStorage('token');
     console.log('id', id);
     if (id) {
+      this.id = id;
+      this.user = user;
       get('http://127.0.0.1:5000/users/'+id+'/marks')
       .then(d =>  {
         let parsed = JSON.parse(d);
@@ -52,7 +56,7 @@ export default class extends React.Component {
             title="Add A Mark"
             onClick={() => {
               console.log("Add");
-              this.props.update('mark');
+              this.props.update('mark', {editing: true, user: this.user, id: this.id});
               //open MarkForm with data prepopulated values
             }}
           />

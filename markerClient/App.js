@@ -33,15 +33,18 @@ export default class App extends Component<{}> {
   updateView = (currentView) => {
     this.router.addPage( currentView );
     console.log('currentView', currentView);
+    //add in ability to store props
     this.setState({currentView});
   }
 
 
-  forceUpdate = (currentView, clear = false) => {
+  forceUpdate = (currentView,props, clear = false) => {
     if (clear) {
       this.router.clear();
     }
+    console.log('props in add', props);
     this.router.addPage(currentView);
+    this.router.addProps(currentView, props);
     this.setState({ currentView });
   }
   
@@ -54,14 +57,16 @@ export default class App extends Component<{}> {
   renderView() {
     // do rendering stuff here
     //switch case based on view
+    let props = this.router.currentPageWithProps;
+    console.log('props', props);
     switch(this.state.currentView) {
       case 'signin':
       case 'signup':
-        return <Form signin={this.state.currentView === 'signin'} goBack={this.goBack} update={this.forceUpdate}/>
+        return <Form signin={this.state.currentView === 'signin'} goBack={this.goBack} update={this.forceUpdate} {...props} />
       case 'marks':
-        return <Marks update={this.forceUpdate}/>
+        return <Marks update={this.forceUpdate} {...props} />
       case 'mark':
-        return <Mark back={this.goBack} update={this.forceUpdate} />
+        return <Mark back={this.goBack} update={this.forceUpdate} {...props} />
       default:
         return <Welcome viewUpdate={this.updateView} />
     }

@@ -24,7 +24,7 @@ export default class extends Component {
     let button = this.props.signin ? <BaseButton title="Sign In" onClick={() => {
                                         post('http://127.0.0.1:5000/token', {username: this.state.text, password: this.state.password}, true)
                                         .then(d => {
-                                          this.props.update('marks', true);
+                                          this.props.update('marks', {},true);
                                         })
                                         .catch(e => console.log('e', e));
                                       }} /> :
@@ -47,7 +47,7 @@ export default class extends Component {
                                                 }
                                               }) 
                                           })})
-                                          .then(() => this.props.update('marks', true))
+                                          .then(() => this.props.update('marks', {}, true))
                                           .catch(e => console.warn('e', e));
                                         }
                                       }} />
