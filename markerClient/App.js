@@ -8,6 +8,7 @@ import Form from './components/Form';
 import Welcome from './components/Welcome';
 import Router from './components/Router';
 import Marks from './components/Marks';
+import Mark from './components/MarkForm';
 
 import {
   Platform,
@@ -36,8 +37,11 @@ export default class App extends Component<{}> {
   }
 
 
-  forceUpdate = (currentView) => {
-    this.router.clear();
+  forceUpdate = (currentView, clear = false) => {
+    if (clear) {
+      this.router.clear();
+    }
+    this.router.addPage(currentView);
     this.setState({ currentView });
   }
   
@@ -50,19 +54,21 @@ export default class App extends Component<{}> {
   renderView() {
     // do rendering stuff here
     //switch case based on view
-    console.log('current', this.state.currentView);
     switch(this.state.currentView) {
       case 'signin':
       case 'signup':
         return <Form signin={this.state.currentView === 'signin'} goBack={this.goBack} update={this.forceUpdate}/>
       case 'marks':
-        return <Marks/>
+        return <Marks update={this.forceUpdate}/>
+      case 'mark':
+        return <Mark back={this.goBack} update={this.forceUpdate} />
       default:
         return <Welcome viewUpdate={this.updateView} />
     }
   }
  
   render() {
+  console.log('current' ,this.state.currentView, this.router.currentPage);
     let comp = !this.state.currentView ? <Welcome viewUpdate={this.updateView} /> 
             : <Form signin={this.state.currentView === 'signin'} goBack={this.goBack} update={this.forceUpdate}/>
     return (

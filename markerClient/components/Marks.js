@@ -7,9 +7,11 @@ import { get, getFromStorage } from './request';
 import {
   StyleSheet,
   Text,
-  ScrollView
+  ScrollView,
+  View
 } from 'react-native';
 
+import BaseButton from './Button';
 
 export default class extends React.Component {
   state = {
@@ -35,6 +37,7 @@ export default class extends React.Component {
       })
       .catch(e => console.log('error in marks', e))
       .then(() => this.setState({loading: false}))
+      // add marks
     }
   }
   
@@ -42,7 +45,22 @@ export default class extends React.Component {
     return (
       <ScrollView>
         {this.state.loading && <Text> .. Loading </Text> }
-        {!this.state.loading && <Text> Your marks </Text> }
+        {!this.state.loading && 
+          <View> 
+          <Text> Your Marks </Text>
+          <BaseButton 
+            title="Add A Mark"
+            onClick={() => {
+              console.log("Add");
+              this.props.update('mark');
+              //open MarkForm with data prepopulated values
+            }}
+          />
+          {this.state.data.map(elem => (
+            {...elem}
+          ))}
+          </View>
+        }
       </ScrollView>
     );
   }
