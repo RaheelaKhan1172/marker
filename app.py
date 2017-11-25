@@ -153,7 +153,3 @@ def mark(m_id):
     else:
       return jsonify({"success": "ok"}), 204
 
-@app.route('/test')
-@login_required
-def test():
-    return jsonify({"success": g.user_id}), 200  
