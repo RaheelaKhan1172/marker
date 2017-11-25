@@ -44,11 +44,13 @@ export default class extends React.Component {
       // add marks
     }
   }
-  
+ /*
+    add in list rendering, delete, and click on edit
+  */ 
   render() {
     return (
       <ScrollView>
-        {this.state.loading && <Text> .. Loading </Text> }
+        { this.state.loading && <Text> .. Loading </Text> }
         {!this.state.loading && 
           <View> 
           <Text> Your Marks </Text>
@@ -57,7 +59,6 @@ export default class extends React.Component {
             onClick={() => {
               console.log("Add");
               this.props.update('mark', {editing: true, user: this.user, id: this.id});
-              //open MarkForm with data prepopulated values
             }}
           />
           {this.state.data.map(elem => (
